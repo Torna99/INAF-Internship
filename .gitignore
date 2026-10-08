@@ -1,0 +1,30 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+intern_vevn
+
+# Jupyter
+.ipynb_checkpoints/
+*-checkpoint.ipynb
+
+# IDE
+.vscode/
+.idea/
+
+# Dati pesanti (evita commit di file enormi)
+data/*
+!data/.gitkeep
+# figures/*
+# !figures/.gitkeep
+*.csv
