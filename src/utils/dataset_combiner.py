@@ -31,15 +31,21 @@ def combine_datasets(input_dir, output_file):
     # Save the combined DataFrame to a new CSV file
     combined_df.to_csv(output_file, index=False)
 
+    print("=" * 50)
     print(f"Combined dataset saved to: {output_file}")
     print(f"Shape of combined dataset: {combined_df.shape}")
+    print(f"Quantity of each particle type in the combined dataset:\n{combined_df['particle_type'].value_counts()}")
+
+
 
 
 if __name__ == "__main__":
     project_dir = Path(__file__).resolve().parents[2]
     os.chdir(project_dir)
 
-    input_directory = project_dir / "data/Background/Background"
-    output_csv_file = project_dir / "data/Background/Engineered_Datasets/combinedbg.csv"
+    # input_directory = project_dir / "data/Background/Background"
+    # output_csv_file = project_dir / "data/Background/Engineered_Datasets/combinedbg.csv"
+    input_directory = project_dir / "data/Background/Background_full"
+    output_csv_file = project_dir / "data/Background/Engineered_Datasets/combinedbg_full.csv"
 
     combine_datasets(input_directory, output_csv_file)
