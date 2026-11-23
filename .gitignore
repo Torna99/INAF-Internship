@@ -28,6 +28,7 @@ data/*
 # figures/*
 # !figures/.gitkeep
 *.csv
+*.h5
 
 plot/*
 OTHER/*

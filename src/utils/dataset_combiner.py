@@ -4,6 +4,7 @@ from pathlib import Path
 
 
 file_path = "csv/features_dataset.csv"
+dir_to_ignore=["PrimaryAlphas_HelMod","PrimaryProtons_HelMod","RESULTS"]
 
 def combine_datasets(input_dir, output_file, sample_size=None):
     """
@@ -18,11 +19,17 @@ def combine_datasets(input_dir, output_file, sample_size=None):
     # Iterate over all directories in the input directory
     i = 0
     for dir_name in os.listdir(input_dir):
+        if dir_name in dir_to_ignore:
+            continue
         if os.path.isdir(os.path.join(input_dir, dir_name)):
             particle_type = dir_name.split("_")[0]  
             print(f"[{i}] => Processing: {particle_type} in directory: {dir_name}")
 
-            ds = pd.read_csv(os.path.join(input_dir, dir_name, file_path))
+            complete_path = os.path.join(input_dir, dir_name, file_path)
+            if not os.path.exists(complete_path):
+                print(f"File Skipped! {complete_path}")
+                continue
+            ds = pd.read_csv(complete_path)
             ds = ds.assign(particle_type=particle_type)
             if sample_size is not None:
                 ds = ds.sample(n=sample_size, random_state=42)
@@ -54,13 +61,15 @@ if __name__ == "__main__":
     # output_csv_file = project_dir / "data/Background/Engineered_Datasets/combinedbg_full.csv"
     # combine_datasets(input_directory, output_csv_file)
 
-    # n_samples_per_tgf = 1000
-    # input_directory = project_dir / "data/TGF/TGF_different_directions/HELPix_TGF_LUT"
-    # output_csv_file = project_dir / "data/Engineered_Datasets/combinedtgf_sampled.csv"
-    # combine_datasets(input_directory, output_csv_file, sample_size=n_samples_per_tgf)
+    n_samples_per_tgf = 1000
+    input_directory = project_dir / "data/TGF/TGF_different_directions/HELPix_TGF_LUT_H410"
+    output_csv_file = project_dir / "data/Engineered_Datasets/combinedtgfH410_sampled.csv"
+    combine_datasets(input_directory, output_csv_file, sample_size=n_samples_per_tgf)
 
-    input_directory = project_dir / "data/Background/Background_primary_fixed"
-    output_csv_file = project_dir / "data/Engineered_Datasets/bg_combined.csv"
-    combine_datasets(input_directory, output_csv_file)
+    # input_directory = project_dir / "data/Background/Background_primary_fixed"
+    # output_csv_file = project_dir / "data/Engineered_Datasets/bg_combined.csv"
+    # combine_datasets(input_directory, output_csv_file)
 
-    
+    # input_directory = project_dir / "data/Background/Background_H410_LowLim10keV"
+    # output_csv_file = project_dir / "data/Engineered_Datasets/bg_combined.csv"
+    # combine_datasets(input_directory, output_csv_file)
